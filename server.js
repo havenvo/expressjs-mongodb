@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://listen:123456@192.168.21.54/listen', (err) => {
+mongoose.connect('mongodb://hieu:123456@localhost:27017/test', (err) => {
     if (err) {
         console.log('Cannot connect to mongodb: ' + err);
     } else {
@@ -36,4 +36,11 @@ app.post('/quotes', (req, res) => {
             console.log(todo);
     });
     res.json(req.body);
+});
+
+app.get('/quotes', (req, res) => {
+    var Todo = require('./models/todo.js');
+    Todo.find({}, (err, todos) => {
+        res.json(todos);
+    });
 });
