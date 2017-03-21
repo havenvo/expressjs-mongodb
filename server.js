@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://listen:123456@192.168.21.54:27017/listen', (err) => {
+mongoose.connect('mongodb://hieu:123456@localhost:27017/test', (err) => {
     if (err) {
         console.log('Cannot connect to mongodb: ' + err);
     } else {
@@ -21,7 +21,11 @@ app.listen(3000, function () {
     console.log('Listening on port 3000');
 });
 
+var routes = require('./routes/index');
+var todos = require('./routes/todo');
 
+app.use('/', routes);
+app.use('/', todos);
 
 app.get('/', function (req, res) {
     res.send('Hello word!');
@@ -52,10 +56,6 @@ app.get('/quotes', (req, res) => {
             res.json(listener);
         }
     });
-    res.json(listener);
-    // Todo.find({}, (err, todos) => {
-    //     res.json(todos);
-    // });
 });
 
 app.put('/listener', (req, res) => {
