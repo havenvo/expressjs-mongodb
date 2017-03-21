@@ -1,5 +1,7 @@
+"use strict";
 var mongoose = require('mongoose');
-// Create a schema
+var Base = require('./base.js');
+const loadClass = require('mongoose-class-wrapper');
 var TodoSchema = new mongoose.Schema({
     name: String,
     completed: Boolean,
@@ -8,14 +10,10 @@ var TodoSchema = new mongoose.Schema({
     updated_at: { type: Date },
 });
 
-TodoSchema.pre('save', function (next) {
-    var currentDate = new Date();
-    this.updated_at = currentDate;
-    if (!this.created_at) {
-        this.created_at = currentDate;
-    }
-    next();
-});
+class Todo extends Base {
 
-var Todo = mongoose.model('Todo', TodoSchema);
-module.exports = Todo;
+}
+
+TodoSchema.plugin(loadClass, Todo);
+var TodoModel = mongoose.model('todo', TodoSchema);
+module.exports = TodoModel;

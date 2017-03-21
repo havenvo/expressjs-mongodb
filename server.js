@@ -1,8 +1,10 @@
+"use strict";
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://hieu:123456@localhost:27017/test', (err) => {
+
+mongoose.connect('mongodb://listen:123456@192.168.21.54:27017/listen', (err) => {
     if (err) {
         console.log('Cannot connect to mongodb: ' + err);
     } else {
@@ -40,7 +42,40 @@ app.post('/quotes', (req, res) => {
 
 app.get('/quotes', (req, res) => {
     var Todo = require('./models/todo.js');
-    Todo.find({}, (err, todos) => {
-        res.json(todos);
+    var Listener = require('./models/listener.js');
+    var listener = new Listener({ name: 'Haven' });
+
+    listener.save(function (err) {
+        if (err) {
+            res.send('Something went wrong: ' + err);
+        } else {
+            res.json(listener);
+        }
     });
+    res.json(listener);
+    // Todo.find({}, (err, todos) => {
+    //     res.json(todos);
+    // });
+});
+
+app.put('/listener', (req, res) => {
+    var Listener = require('./models/listener.js');
+    Listener.findById(req.body.id, function (err, listener) {
+        if (err) {
+            res.send('Something went wrong: ' + err);
+        } else {
+            if (listener != null) {
+                listener.name = "Hihi";
+                listener.save(function (err) {
+                    if (err) {
+                        res.send('Something went wrong: ' + err);
+                    } else {
+                        res.json(listener);
+                    }
+                });
+            } else {
+                res.send('Listener not found');
+            }
+        }
+    })
 });
