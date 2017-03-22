@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const config = require('./config');
+const passport = require('passport');
 
 mongoose.connect(config.database, (err) => {
     if (err) {
@@ -13,9 +14,9 @@ mongoose.connect(config.database, (err) => {
         console.log('Database connected!');
     }
 });
+var db = mongoose.connection;
 
 app.set('superSecret', config.secret);
-var db = mongoose.connection;
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
