@@ -30,8 +30,8 @@ router.post('/authenticate', (req, res) => {
     }
 });
 
-router.post('/token', function (req, res) {
-    validateRefreshToken(req, res, function (err) {
+router.post('/token', (req, res) => {
+    validateRefreshToken(req, res, (err) => {
         if (err) {
             res.status(401).json({ message: 'Refresh token is invalid' });
         } else {
@@ -39,7 +39,7 @@ router.post('/token', function (req, res) {
                 generateRefreshToken(req, res, (refreshToken) => {
                     var refreshTokenExpiredDate = moment(new Date()).add(refreshTokenExpiredIn, 'minutes');
                     var authInfo = new AuthenticateInfo({ refresh_token: refreshToken, user_id: req.body.user.id, expired_time: refreshTokenExpiredDate });
-                    authInfo.save(function (err) {
+                    authInfo.save((err) => {
                         if (err) {
                             res.json(err);
                         } else {
