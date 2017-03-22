@@ -5,9 +5,7 @@ const loadClass = require('mongoose-class-wrapper');
 var TodoSchema = new mongoose.Schema({
     name: String,
     completed: Boolean,
-    note: String,
-    created_at: { type: Date },
-    updated_at: { type: Date },
+    note: String
 });
 
 class Todo extends Base {
