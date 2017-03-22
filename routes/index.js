@@ -8,15 +8,15 @@ var expiresIn = 86400; // seconds = 1 day
 var refreshTokenExpiredIn = 43200; // minutes = 30 days
 var type = 'Bearer';
 
-router.post('/authenticate', function (req, res) {
+router.post('/authenticate', (req, res) => {
     var username = req.body.user.username;
     var password = req.body.user.password;
     if (username == 'haven' && password == '123456') {
-        generateAccessToken(req, res, function (accessToken) {
-            generateRefreshToken(req, res, function (refreshToken) {
+        generateAccessToken(req, res, (accessToken) => {
+            generateRefreshToken(req, res, (refreshToken) => {
                 var refreshTokenExpiredDate = moment(new Date()).add(refreshTokenExpiredIn, 'minutes');
                 var authInfo = new AuthenticateInfo({ refresh_token: refreshToken, user_id: req.body.user.id, expired_time: refreshTokenExpiredDate });
-                authInfo.save(function (err) {
+                authInfo.save((err) => {
                     if (err) {
                         res.json(err);
                     } else {
@@ -35,8 +35,8 @@ router.post('/token', function (req, res) {
         if (err) {
             res.status(401).json({ message: 'Refresh token is invalid' });
         } else {
-            generateAccessToken(req, res, function (accessToken) {
-                generateRefreshToken(req, res, function (refreshToken) {
+            generateAccessToken(req, res, (accessToken) => {
+                generateRefreshToken(req, res, (refreshToken) => {
                     var refreshTokenExpiredDate = moment(new Date()).add(refreshTokenExpiredIn, 'minutes');
                     var authInfo = new AuthenticateInfo({ refresh_token: refreshToken, user_id: req.body.user.id, expired_time: refreshTokenExpiredDate });
                     authInfo.save(function (err) {
