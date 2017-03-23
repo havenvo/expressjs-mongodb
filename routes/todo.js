@@ -1,7 +1,7 @@
-var express = require('express');
-var authenticator = require('../Authenticator');
-var router = express.Router();
-var todoController = require('../controllers/TodoController');
+const express = require('express');
+const authenticator = require('../Authenticator');
+const router = express.Router();
+const todoController = require('../controllers/TodoController');
 
 router.post('/todo', authenticator, todoController.post)
 router.get('/todos', authenticator, todoController.list);

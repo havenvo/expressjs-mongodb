@@ -1,6 +1,7 @@
-var Todo = require('../models/todo');
+"use strict";
+const Todo = require('../models/todo');
 exports.post = function (req, res) {
-    var todo = new Todo({ name: req.body.name });
+    let todo = new Todo({ name: req.body.name });
     todo.save((err) => {
         if (err) {
             res.json(err);
@@ -8,7 +9,7 @@ exports.post = function (req, res) {
             res.json(todo);
         }
     });
-}
+};
 
 exports.list = function (req, res) {
     Todo.find((err, todos) => {
@@ -18,11 +19,11 @@ exports.list = function (req, res) {
             res.json(todos);
         }
     });
-}
+};
 
 exports.update = function (req, res) {
     Todo.findById(req.body.id, (err, todo) => {
-        if (todo != null) {
+        if (todo !== null) {
             todo.name = req.body.name;
             todo.save();
             res.json(todo);
@@ -31,4 +32,4 @@ exports.update = function (req, res) {
         }
     })
 
-}
+};

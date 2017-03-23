@@ -1,7 +1,6 @@
-"use strict";
 const express = require('express');
 const app = module.exports = express();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const config = require('./config');
@@ -14,20 +13,27 @@ mongoose.connect(config.database, (err) => {
         console.log('Database connected!');
     }
 });
-var db = mongoose.connection;
 
+const db = mongoose.connection;
 app.set('superSecret', config.secret);
-
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-app.listen(3000, function () {
-    console.log('Listening on port 3000');
+const port = process.env.PORT || 3000;
+
+app.listen(port, function () {
+    console.log('Listening on port: ' + port);
 });
 
-var routes = require('./routes/index');
-var todos = require('./routes/todo');
+app.use((req, res, next) => {
+    if (app.get('env') === 'development') {
+        // Get info to show log here
+    }
+    next();
+});
 
+const routes = require('./routes/index');
+const todos = require('./routes/todo');
 app.use('/api', routes);
 app.use('/api', todos);
